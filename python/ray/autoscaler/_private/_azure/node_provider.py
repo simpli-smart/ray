@@ -223,6 +223,14 @@ class AzureNodeProvider(NodeProvider):
         return ip
 
     def create_node(self, node_config, tags, count):
+         # Check if this is an NVIDIA image and add plan configuration
+        if node_config["azure_arm_parameters"].get("imagePublisher", "") == "nvidia":
+            node_config["azure_arm_parameters"]["plan"] = {
+                "name": "ngc-base-version-25_5_1_gen2",
+                "publisher": "nvidia",
+                "product": "ngc_azure_17_11"
+            }
+    
         resource_group = self.provider_config["resource_group"]
 
         if self.cache_stopped_nodes:

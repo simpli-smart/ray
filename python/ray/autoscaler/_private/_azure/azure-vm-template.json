@@ -55,6 +55,13 @@
 	    },
 	    "defaultValue": ""
 	},
+        "plan": {
+            "type": "object",
+            "metadata": {
+                "description": "The plan for the VM image (required for some marketplace images)"
+            },
+            "defaultValue": {}
+        },
         "vmSize": {
             "type": "string",
             "metadata": {
@@ -141,7 +148,8 @@
         "networkInterfaceName": "[if(parameters('provisionPublicIp'), variables('networkInterfaceNamePublic'), variables('networkInterfaceNamePrivate'))]",
         "networkIpConfig": "[guid(resourceGroup().id, parameters('vmName'))]",
         "osDiskType": "Standard_LRS",
-        "publicIpAddressName": "[concat(parameters('vmName'), '-ip')]"
+        "publicIpAddressName": "[concat(parameters('vmName'), '-ip')]",
+        "hasPlan": "[not(empty(parameters('plan')))]"
     },
     "resources": [
         {
@@ -238,6 +246,7 @@
                 "count": "[parameters('vmCount')]"
             },
             "tags": "[parameters('vmTags')]",
+            "plan": "[if(variables('hasPlan'), parameters('plan'), json('null'))]",
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
