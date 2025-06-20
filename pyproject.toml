@@ -1,7 +1,35 @@
 [project]
+name = "ray"
 version = "3.0.0"
+description = "Ray: A distributed execution framework"
+authors = [
+    {name = "Ray Team", email = "ray@example.com"}
+]
 requires-python = ">=3.9"
+readme = "README.rst"
+license = {text = "Apache-2.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "click >=7.0",
+    "pyyaml",
+    "prometheus_client >=0.7.1",
+    "aiohttp >=3.7.0",
+    "aiohttp_cors",
+    "grpcio >=1.32.0",
+    "protobuf >=3.15.3",
+    "numpy >=1.19.0"
+]
 
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# Rest of your existing configuration...
 [tool.ruff]
 line-length = 88
 extend-exclude = [
@@ -28,16 +56,12 @@ ignore = [
     "C408",
     "C417",
     "E741",
-    # TODO(MortalHappiness): Remove the following rules from the ignore list
-    # The above are rules ignored originally in flake8
-    # The following are rules ignored in ruff
     "B023",
     "B024",
     "B026",
     "B027",
     "B904",
     "C419",
-    # Below are auto-fixable rules
     "I001",
 ]
 
@@ -53,13 +77,6 @@ known-third-party = ["grpc"]
 [tool.ruff.lint.isort.sections]
 afterray = ["psutil", "setproctitle"]
 
-# Some of the directories need to be kept in the blacklist for isort ("I" rule):
-# python/ray/cloudpickle/*
-# doc/*
-# python/ray/__init__.py
-# python/ray/setup-dev.py
-# For the rest we will gradually remove them from the blacklist as we
-# reformat the code to follow the style guide.
 [tool.ruff.lint.per-file-ignores]
 "doc/*" = ["I"]
 "python/ray/__init__.py" = ["I"]
@@ -79,6 +96,4 @@ afterray = ["psutil", "setproctitle"]
 "python/ray/workflow/*" = ["I"]
 "rllib/*" = ["I"]
 "release/*" = ["I"]
-
-# TODO(matthewdeng): Remove this line
 "python/ray/tune/__init__.py" = ["I"]
